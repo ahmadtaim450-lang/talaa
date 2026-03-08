@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#ffffff"/>
+<title>طلعة</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-180.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
+<link rel="shortcut icon" href="icon-192.png"/>
+<meta name="apple-mobile-web-app-title" content="طلعة"/>
+<meta name="application-name" content="طلعة"/>
+<meta name="apple-mobile-web-app-title" content="طلعة"/>
+<meta name="application-name" content="طلعة"/>
+<meta name="msapplication-TileColor" content="#0a0a0a"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* جميع الأنماط من ملفك الأصلي */
+:root {
+  --ff:'IBM Plex Sans Arabic',sans-serif;
+  --white:#ffffff; --black:#0a0a0a;
+  --gray-50:#f8f8f8; --gray-100:#f0f0f0; --gray-200:#e4e4e4;
+  --gray-300:#d0d0d0; --gray-400:#b0b0b0; --gray-500:#888888;
+  --gray-600:#666666; --gray-700:#444444; --gray-800:#222222;
+  --bg:var(--white); --surface:var(--gray-50); --surface2:var(--gray-100);
+  --border:var(--gray-200); --border2:var(--gray-300);
+  --fg:var(--black); --fg2:var(--gray-800); --fg3:var(--gray-600); --fg4:var(--gray-400);
+  --danger:#e03333; --success:#1a9e4a;
+  --r-xs:6px; --r-sm:10px; --r:16px; --r-lg:20px; --r-xl:26px; --r-pill:999px;
+  --sh-xs:0 1px 2px rgba(0,0,0,.06);
+  --sh-sm:0 2px 8px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --sh:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+  --sh-lg:0 12px 48px rgba(0,0,0,.13),0 4px 16px rgba(0,0,0,.07);
+  --sh-xl:0 24px 80px rgba(0,0,0,.16),0 8px 24px rgba(0,0,0,.08);
+  --dur-fast:.14s; --dur:.22s; --dur-slow:.38s;
+  --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.34,1.4,.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-tap-highlight-color:transparent;scroll-behavior:smooth;}
+body{font-family:var(--ff);background:var(--bg);color:var(--fg);min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+button{font-family:var(--ff);cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation;}
+input,textarea{font-family:var(--ff);color:var(--fg);}
+img{display:block;} svg{display:block;flex-shrink:0;}
+.app-loader{position:fixed;inset:0;z-index:9999;background:var(--white);display:flex;align-items:center;justify-content:center;transition:opacity .3s,visibility .3s;}
+.app-loader.gone{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-spin{width:28px;height:28px;border:2.5px solid var(--border2);border-top-color:var(--black);border-radius:50%;animation:spin .65s linear infinite;}
+.screen{display:none;min-height:100dvh;flex-direction:column;}
+.screen.active{display:flex;}
+#s-auth{align-items:center;justify-content:center;padding:2rem 1.5rem;min-height:100dvh;background:var(--bg);position:relative;overflow:hidden;}
+#s-auth::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--gray-200) 1px,transparent 1px),linear-gradient(90deg,var(--gray-200) 1px,transparent 1px);background-size:40px 40px;opacity:.4;mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,black 0%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,black 0%,transparent 100%);}
+#s-auth::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 0%,var(--gray-100) 0%,transparent 70%);}
+.auth-wrap{width:100%;max-width:400px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:2.2rem;animation:fadeUp var(--dur-slow) var(--spring) both;}
+.logo-block{display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.logo-svg-wrap{width:72px;height:72px;}
+.logo-wordmark{font-size:1.6rem;font-weight:700;letter-spacing:-.04em;color:var(--fg);}
+.logo-sub{font-size:.8rem;color:var(--fg3);font-weight:400;letter-spacing:.01em;margin-top:-.4rem;}
+.auth-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);width:100%;box-shadow:var(--sh-lg);overflow:hidden;}
+.seg-wrap{padding:.9rem .9rem .3rem;}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:3px;}
+.seg-btn{padding:.6rem;border-radius:7px;font-size:.85rem;font-weight:600;color:var(--fg4);transition:all var(--dur) var(--ease);text-align:center;}
+.seg-btn.active{background:var(--white);color:var(--fg);box-shadow:var(--sh-sm);}
+.forgot-hd{display:none;align-items:center;gap:.75rem;padding:.9rem 1.1rem .3rem;}
+.forgot-hd.on{display:flex;}
+.forgot-hd-title{font-size:.9rem;font-weight:700;letter-spacing:-.02em;}
+.auth-body{padding:1.2rem 1.4rem 1.4rem;}
+.auth-panel{display:none;flex-direction:column;gap:1rem;animation:fadeIn var(--dur) ease both;}
+.auth-panel.active{display:flex;}
+.field{display:flex;flex-direction:column;gap:.45rem;}
+.field-lbl{font-size:.78rem;font-weight:600;color:var(--fg3);letter-spacing:.01em;}
+.field-row{position:relative;}
+.field-icon{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);color:var(--fg4);pointer-events:none;transition:color var(--dur-fast);}
+.field-row:focus-within .field-icon{color:var(--fg2);}
+.field-eye{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--fg4);cursor:pointer;transition:color var(--dur-fast);padding:.2rem;}
+.field-eye:hover{color:var(--fg2);}
+.f-input{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.82rem 2.6rem .82rem .9rem;font-size:.92rem;outline:none;transition:border-color var(--dur-fast),box-shadow var(--dur-fast),background var(--dur-fast);-webkit-appearance:none;}
+.f-input.has-eye{padding-left:2.6rem;}
+.f-input::placeholder{color:var(--fg4);}
+.f-input:focus{background:var(--white);border-color:var(--gray-800);box-shadow:0 0 0 3px rgba(0,0,0,.07);}
+.f-input.e{border-color:var(--danger);}
+.ferr{font-size:.76rem;color:var(--danger);padding:.35rem .7rem;background:rgba(224,51,51,.07);border:1px solid rgba(224,51,51,.15);border-radius:var(--r-xs);display:none;}
+.ferr.on{display:block;}
+.fp-sent{display:none;flex-direction:column;align-items:center;text-align:center;gap:.8rem;padding:1.2rem .5rem .5rem;animation:fadeIn var(--dur) ease both;}
+.fp-sent.on{display:flex;}
+.fp-sent-icon{width:52px;height:52px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.fp-sent-title{font-size:1rem;font-weight:700;letter-spacing:-.02em;}
+.fp-sent-sub{font-size:.8rem;color:var(--fg3);line-height:1.7;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.4rem;border-radius:var(--r-sm);font-size:.92rem;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);width:100%;letter-spacing:-.01em;user-select:none;}
+.btn-fill{background:var(--black);color:var(--white);box-shadow:var(--sh-sm);}
+.btn-fill:hover{background:var(--gray-800);transform:translateY(-1px);box-shadow:var(--sh);}
+.btn-fill:active{transform:scale(.98);box-shadow:var(--sh-xs);}
+.btn-outline{background:transparent;color:var(--fg);border:1.5px solid var(--border2);}
+.btn-outline:hover{background:var(--surface);border-color:var(--gray-400);}
+.btn-outline:active{transform:scale(.98);}
+.btn-ghost{background:transparent;color:var(--fg3);}
+.btn-ghost:hover{color:var(--fg);background:var(--surface);}
+.btn-danger-soft{background:rgba(224,51,51,.07);color:var(--danger);border:1.5px solid rgba(224,51,51,.18);}
+.btn-danger-soft:hover{background:rgba(224,51,51,.13);}
+.btn-sm{padding:.6rem 1.1rem;font-size:.84rem;border-radius:var(--r-xs);}
+.btn-icon{width:38px;height:38px;padding:0;border-radius:var(--r-sm);background:var(--surface);color:var(--fg2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--dur-fast);}
+.btn-icon:hover{background:var(--surface2);color:var(--fg);}
+.btn-icon:active{transform:scale(.94);}
+.btn-loading{pointer-events:none;opacity:.65;}
+.btn-loading .btn-lbl::after{content:'';display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:.4rem;}
+.auth-divider{display:flex;align-items:center;gap:.8rem;color:var(--fg4);font-size:.76rem;font-weight:500;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-footer{font-size:.73rem;color:var(--fg4);text-align:center;padding:.5rem;margin-top:-.3rem;}
+#s-dash{background:var(--bg);}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.4rem;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.tb-logo{display:flex;align-items:center;gap:.55rem;font-size:1.05rem;font-weight:700;letter-spacing:-.03em;color:var(--fg);}
+.tb-logo-mark{width:26px;height:26px;}
+.tb-right{display:flex;align-items:center;gap:.6rem;position:relative;}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--black);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;cursor:pointer;flex-shrink:0;border:2px solid var(--border);transition:all var(--dur-fast);}
+.avatar:hover{border-color:var(--gray-400);}
+.prof-drop{position:absolute;top:calc(100% + .6rem);left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-xl);min-width:210px;overflow:hidden;display:none;z-index:200;animation:scaleIn var(--dur) var(--spring) both;transform-origin:top left;}
+.prof-drop.on{display:block;}
+.pd-head{padding:.9rem 1.1rem;background:var(--surface);border-bottom:1px solid var(--border);}
+.pd-name{font-size:.9rem;font-weight:600;}
+.pd-email{font-size:.75rem;color:var(--fg3);margin-top:.15rem;}
+.pd-item{display:flex;align-items:center;gap:.65rem;padding:.75rem 1.1rem;font-size:.87rem;cursor:pointer;transition:background var(--dur-fast);color:var(--fg2);}
+.pd-item:hover{background:var(--surface);}
+.pd-item.red{color:var(--danger);}
+.dash-scroll{flex:1;overflow-y:auto;padding:1.6rem 1.4rem 3rem;display:flex;flex-direction:column;gap:2rem;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.greeting{animation:fadeUp var(--dur-slow) var(--spring) both;}
+.g-line1{font-size:.75rem;font-weight:600;color:var(--fg4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;}
+.g-line2{font-size:1.75rem;font-weight:700;letter-spacing:-.04em;line-height:1.2;}
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;animation:fadeUp var(--dur-slow) .06s var(--spring) both;}
+.ac{border-radius:var(--r-lg);padding:1.3rem 1.2rem 1.4rem;cursor:pointer;display:flex;flex-direction:column;gap:.9rem;transition:all var(--dur) var(--ease);border:none;text-align:right;}
+.ac:active{transform:scale(.96);}
+.ac-dark{background:var(--black);color:var(--white);box-shadow:var(--sh);}
+.ac-dark:hover{background:var(--gray-800);transform:translateY(-2px);box-shadow:var(--sh-lg);}
+.ac-light{background:var(--white);color:var(--fg);border:1.5px solid var(--border);box-shadow:var(--sh-xs);}
+.ac-light:hover{border-color:var(--gray-400);transform:translateY(-2px);box-shadow:var(--sh);}
+.ac-icon-box{width:42px;height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;}
+.ac-dark .ac-icon-box{background:rgba(255,255,255,.1);}
+.ac-light .ac-icon-box{background:var(--surface);border:1px solid var(--border);}
+.ac-title{font-size:.97rem;font-weight:700;letter-spacing:-.02em;}
+.ac-sub{font-size:.74rem;opacity:.55;margin-top:.1rem;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;animation:fadeUp var(--dur-slow) .1s var(--spring) both;}
+.sec-title{font-size:1rem;font-weight:700;letter-spacing:-.02em;}
+.rooms-list{display:flex;flex-direction:column;gap:.65rem;animation:fadeUp var(--dur-slow) .14s var(--spring) both;}
+.room-row{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:.95rem 1.1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all var(--dur-fast);}
+.room-row:hover{background:var(--surface);border-color:var(--border2);}
+.room-row:active{transform:scale(.99);}
+.rr-l{display:flex;align-items:center;gap:.85rem;}
+.rr-ico{width:40px;height:40px;background:var(--black);color:var(--white);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem;font-weight:700;}
+.rr-name{font-size:.92rem;font-weight:600;letter-spacing:-.01em;}
+.rr-meta{font-size:.73rem;color:var(--fg3);margin-top:.15rem;display:flex;align-items:center;gap:.4rem;}
+.rr-r{display:flex;align-items:center;gap:.5rem;}
+.code-tag{background:var(--surface);color:var(--fg2);padding:.3rem .7rem;border-radius:var(--r-pill);font-size:.76rem;font-weight:700;letter-spacing:.06em;border:1px solid var(--border);direction:ltr;}
+.chevron-r{color:var(--fg4);}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.status-dot.green{background:var(--success);} .status-dot.orange{background:#e07b00;} .status-dot.red{background:var(--danger);}
+.empty-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:2.5rem 1.5rem;text-align:center;color:var(--fg3);}
+.eb-icon{margin:0 auto .8rem;opacity:.3;}
+.eb-text{font-size:.88rem;}
+#s-room{background:var(--bg);}
+.room-topbar{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.1rem;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:.7rem;}
+.rtb-center{flex:1;min-width:0;}
+.rtb-title{font-size:.95rem;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rtb-sub{font-size:.72rem;color:var(--fg3);margin-top:.1rem;}
+.room-body{flex:1;overflow-y:auto;padding:1.3rem;display:flex;flex-direction:column;gap:1.3rem;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.room-strip{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.rs-l{display:flex;flex-direction:column;gap:.3rem;}
+.rs-name{font-size:.95rem;font-weight:700;letter-spacing:-.02em;}
+.rs-timer-row{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--fg3);}
+.code-pill{background:var(--black);color:var(--white);padding:.52rem 1rem;border-radius:var(--r-pill);font-size:.82rem;font-weight:700;letter-spacing:.06em;cursor:pointer;border:none;font-family:var(--ff);transition:all var(--dur-fast);direction:ltr;}
+.code-pill:hover{background:var(--gray-800);}
+.code-pill:active{transform:scale(.96);}
+.live-timer{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";font-size:.82rem;font-weight:600;color:var(--fg2);direction:ltr;}
+.live-timer.warn{color:#e07b00;} .live-timer.danger{color:var(--danger);}
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--r-lg);padding:2rem 1.5rem;text-align:center;cursor:pointer;transition:all var(--dur) var(--ease);background:var(--surface);position:relative;overflow:hidden;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--black);background:var(--gray-100);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uz-icon{width:52px;height:52px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin:0 auto .9rem;box-shadow:var(--sh-sm);}
+.uz-title{font-size:.95rem;font-weight:600;margin-bottom:.3rem;letter-spacing:-.01em;}
+.uz-sub{font-size:.78rem;color:var(--fg4);}
+.prog{height:3px;background:var(--border);border-radius:var(--r-pill);overflow:hidden;display:none;}
+.prog.on{display:block;}
+.prog-fill{height:100%;background:var(--black);border-radius:var(--r-pill);transition:width .12s linear;width:0%;}
+.gallery-head{display:flex;align-items:center;justify-content:space-between;}
+.gh-title{font-size:.95rem;font-weight:700;letter-spacing:-.02em;}
+.gh-cnt{font-size:.76rem;font-weight:600;color:var(--fg3);background:var(--surface);padding:.25rem .7rem;border-radius:var(--r-pill);border:1px solid var(--border);}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:.7rem;margin-top:.85rem;}
+.photo-cell{border-radius:var(--r-sm);overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:all var(--dur) var(--ease);animation:fadeIn var(--dur) ease both;}
+.photo-cell:hover{transform:translateY(-2px);box-shadow:var(--sh);}
+.photo-cell:active{transform:scale(.97);}
+.photo-cell img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.pc-bar{padding:.42rem .6rem;display:flex;align-items:center;justify-content:space-between;gap:.4rem;background:var(--white);}
+.pc-name{font-size:.7rem;color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pc-dl{width:24px;height:24px;border-radius:5px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all var(--dur-fast);}
+.pc-dl:hover{background:var(--black);border-color:var(--black);}
+.pc-dl:hover svg{color:var(--white);}
+.empty-gallery{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--fg3);}
+.eg-icon{margin:0 auto .7rem;opacity:.25;} .eg-text{font-size:.86rem;}
+.overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;}
+.overlay.center-mode{align-items:center;padding:1.5rem;}
+.overlay.on{display:flex;}
+.sheet{background:var(--white);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;max-width:500px;padding:1rem 1.5rem 2.5rem;animation:slideUp var(--dur-slow) var(--spring) both;max-height:90dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.sheet.ctr{border-radius:var(--r-xl);animation:scaleIn var(--dur) var(--spring) both;margin:auto;padding:1.8rem;}
+.handle{width:36px;height:4px;background:var(--border2);border-radius:var(--r-pill);margin:0 auto .9rem;}
+.sh-title{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;margin-bottom:.35rem;}
+.sh-sub{font-size:.83rem;color:var(--fg3);margin-bottom:1.5rem;line-height:1.65;}
+.dur-display{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem;text-align:center;margin-bottom:1.2rem;}
+.dur-value{font-size:2rem;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums;direction:ltr;line-height:1.1;}
+.dur-label{font-size:.76rem;color:var(--fg3);margin-top:.3rem;}
+.slider-track{position:relative;padding:.5rem 0;cursor:pointer;touch-action:none;}
+.slider-bg{height:4px;background:var(--border2);border-radius:var(--r-pill);position:relative;overflow:hidden;}
+.slider-fill{height:100%;background:var(--black);border-radius:var(--r-pill);transition:width .04s;}
+.slider-thumb{position:absolute;width:22px;height:22px;background:var(--white);border:2.5px solid var(--black);border-radius:50%;top:50%;transform:translate(-50%,-50%);box-shadow:var(--sh-sm);pointer-events:none;}
+.slider-track:active .slider-thumb{transform:translate(-50%,-50%) scale(1.15);}
+.slider-labels{display:flex;justify-content:space-between;margin-top:.5rem;font-size:.7rem;color:var(--fg4);font-weight:500;direction:ltr;}
+.presets{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.3rem;margin-top:.9rem;}
+.preset-btn{padding:.4rem .9rem;border-radius:var(--r-pill);font-size:.78rem;font-weight:600;background:var(--surface);border:1.5px solid var(--border);color:var(--fg3);cursor:pointer;transition:all var(--dur-fast);white-space:nowrap;}
+.preset-btn:hover{border-color:var(--black);color:var(--fg);}
+.preset-btn.sel{background:var(--black);color:var(--white);border-color:var(--black);}
+.code-reveal{text-align:center;background:var(--surface);border-radius:var(--r-lg);padding:1.8rem 1.4rem;margin-bottom:1.2rem;border:1px solid var(--border);position:relative;overflow:hidden;}
+.code-reveal::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,var(--gray-100));pointer-events:none;}
+.code-chars{display:flex;justify-content:center;gap:.45rem;direction:ltr;margin:1rem 0 .8rem;}
+.code-chr{width:44px;height:54px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:var(--fg);box-shadow:var(--sh-xs);animation:popIn var(--dur) var(--spring) both;}
+.code-chr:nth-child(1){animation-delay:.05s;} .code-chr:nth-child(2){animation-delay:.10s;} .code-chr:nth-child(3){animation-delay:.15s;} .code-chr:nth-child(4){animation-delay:.20s;} .code-chr:nth-child(5){animation-delay:.25s;} .code-chr:nth-child(6){animation-delay:.30s;}
+.code-exp-note{font-size:.78rem;color:var(--fg3);}
+.code-join-inp{text-align:center;letter-spacing:.35em;font-size:1.7rem;font-weight:700;padding:1.1rem;text-transform:uppercase;direction:ltr;}
+.lightbox{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.96);display:none;flex-direction:column;align-items:center;justify-content:center;padding:1rem;}
+.lightbox.on{display:flex;animation:fadeIn var(--dur) ease both;}
+.lb-img{max-height:72dvh;max-width:100%;object-fit:contain;border-radius:var(--r);flex-shrink:1;}
+.lb-bar{width:100%;max-width:640px;display:flex;align-items:center;justify-content:space-between;padding:.7rem .3rem 0;color:rgba(255,255,255,.6);}
+.lb-name{font-size:.82rem;}
+.lb-btns{display:flex;gap:.5rem;}
+.lb-btn{padding:.5rem 1rem;border-radius:var(--r-xs);font-size:.82rem;font-weight:600;cursor:pointer;border:none;font-family:var(--ff);transition:opacity var(--dur-fast);}
+.lb-btn.solid{background:var(--white);color:var(--black);} .lb-btn.ghost{background:rgba(255,255,255,.1);color:var(--white);}
+.lb-btn:hover{opacity:.75;}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast);}
+.lb-nav:hover{background:rgba(255,255,255,.2);}
+.lb-nav.prev{right:.8rem;} .lb-nav.next{left:.8rem;}
+.lb-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast);}
+.lb-close:hover{background:rgba(224,51,51,.5);}
+.lb-counter{position:absolute;top:1.1rem;left:50%;transform:translateX(-50%);font-size:.76rem;color:rgba(255,255,255,.4);direction:ltr;}
+.toast-rack{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column-reverse;gap:.45rem;align-items:center;pointer-events:none;width:90%;max-width:320px;}
+.toast{background:var(--black);color:var(--white);padding:.65rem 1.1rem;border-radius:var(--r-pill);font-size:.83rem;font-weight:500;box-shadow:var(--sh-lg);animation:toastIn var(--dur) var(--spring) both;white-space:normal;word-break:break-word;display:flex;align-items:center;gap:.45rem;text-align:center;}
+.toast.err{background:var(--danger);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(120%);}to{opacity:1;transform:translateY(0);}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px) scale(.92);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes popIn{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* ── Nawwacode Credit ── */
+.nawwa-credit{
+  margin-top:.55rem;font-size:.72rem;color:var(--fg4);letter-spacing:.01em;
+}
+.nawwa-credit span{
+  font-weight:700;color:var(--fg3);
+  background:linear-gradient(135deg,#444,#888);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+/* ── Terms link in footer ── */
+.terms-link{
+  background:none;border:none;cursor:pointer;font-family:var(--ff);
+  font-size:.73rem;color:var(--fg3);text-decoration:underline;
+  text-underline-offset:2px;padding:0;
+}
+.terms-link:hover{color:var(--fg);}
+/* ── Terms checkbox row in register ── */
+.terms-check-row{
+  display:flex;align-items:flex-start;gap:.55rem;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:.75rem .9rem;margin-bottom:.1rem;
+}
+.terms-cb{
+  width:17px;height:17px;accent-color:var(--black);
+  flex-shrink:0;margin-top:.1rem;cursor:pointer;
+}
+.terms-cb-lbl{
+  font-size:.82rem;color:var(--fg2);line-height:1.5;cursor:pointer;
+}
+.terms-inline-link{
+  background:none;border:none;font-family:var(--ff);font-size:.82rem;
+  color:var(--black);font-weight:600;text-decoration:underline;
+  text-underline-offset:2px;cursor:pointer;padding:0;display:inline;
+}
+.terms-inline-link:hover{opacity:.7;}
+/* ── Terms modal body ── */
+.terms-body{font-size:.84rem;color:var(--fg2);line-height:1.75;}
+.terms-section{margin-bottom:1.3rem;}
+.terms-section-title{
+  font-size:.88rem;font-weight:700;color:var(--fg);
+  letter-spacing:-.01em;margin-bottom:.5rem;
+  padding-bottom:.4rem;border-bottom:1px solid var(--border);
+}
+.terms-list{
+  padding-right:1.2rem;margin-top:.45rem;
+  display:flex;flex-direction:column;gap:.3rem;
+}
+.terms-list li{color:var(--fg3);}
+.terms-dev-note{
+  text-align:center;padding:1rem;margin-top:.5rem;
+  font-size:.75rem;color:var(--fg4);
+  background:var(--surface);border-radius:var(--r-sm);
+  border:1px solid var(--border);
+}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:10px;}
+.divider{height:1px;background:var(--border);margin:.15rem 0;}
+@media(max-width:440px){.action-row{grid-template-columns:1fr 1fr;}.ac{padding:1rem;}.code-chars{gap:.3rem;}.code-chr{width:38px;height:48px;font-size:1.3rem;}}
+/* ── iOS zoom fix: font-size ≥ 16px on mobile inputs ── */
+@media(max-width:768px){
+  .f-input{font-size:16px;}
+  .code-join-inp{font-size:1.4rem;}
+  .btn-icon{width:42px;height:42px;}
+  .photo-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.55rem;}
+  .dash-scroll{padding:1.2rem 1rem 3rem;}
+  .room-body{padding:1rem;}
+  .topbar{padding:.9rem 1rem;}
+  .toast-rack{bottom:1.5rem;width:92%;}
+}
+/* ── Tablet ── */
+@media(min-width:600px){
+  .photo-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+  .action-row{gap:1.1rem;}
+}
+@media(min-width:768px){
+  .photo-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
+  .dash-scroll{padding:2rem 2rem 3rem;}
+  .room-body{padding:1.5rem 2rem;}
+}
+/* ── Landscape phone ── */
+@media(max-height:500px) and (orientation:landscape){
+  #s-auth{padding:1rem;}
+  .auth-wrap{gap:1rem;}
+  .logo-svg-wrap{width:48px;height:48px;}
+  .logo-wordmark{font-size:1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ APP LOADER ════ -->
+<div class="app-loader" id="appLoader">
+  <div class="loader-spin"></div>
+</div>
+
+<!-- ════ TOAST RACK ════ -->
+<div class="toast-rack" id="toastRack"></div>
+
+<!-- ════ LIGHTBOX ════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLb()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+  </button>
+  <div class="lb-counter" id="lbCounter"></div>
+  <button class="lb-nav prev" onclick="lbNav(-1)">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 4 6 9 11 14"/></svg>
+  </button>
+  <button class="lb-nav next" onclick="lbNav(1)">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 4 12 9 7 14"/></svg>
+  </button>
+  <img class="lb-img" id="lbImg" src="" alt=""/>
+  <div class="lb-bar">
+    <span class="lb-name" id="lbName"></span>
+    <div class="lb-btns">
+      <button class="lb-btn solid" onclick="dlCurrent()">تحميل</button>
+      <button class="lb-btn ghost" onclick="closeLb()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     AUTH SCREEN
+════════════════════════════════════════════ -->
+<div class="screen active" id="s-auth">
+  <div class="auth-wrap">
+
+    <div class="logo-block">
+      <!-- لوغو كاميرا عصري -->
+      <svg class="logo-svg-wrap" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="72" height="72" rx="18" fill="#0a0a0a"/>
+        <!-- جسم الكاميرا -->
+        <rect x="10" y="24" width="52" height="32" rx="7" fill="white" opacity="0.97"/>
+        <!-- نتوء العدسة العلوي -->
+        <path d="M26 24 L26 19 Q26 16 29 16 L43 16 Q46 16 46 19 L46 24 Z" fill="white" opacity="0.97"/>
+        <!-- فلاش صغير -->
+        <rect x="14" y="19" width="8" height="5" rx="2.5" fill="white" opacity="0.6"/>
+        <!-- العدسة الخارجية -->
+        <circle cx="36" cy="40" r="11" fill="#0a0a0a" opacity="0.12"/>
+        <circle cx="36" cy="40" r="9.5" fill="#1a1a1a"/>
+        <!-- حلقة العدسة -->
+        <circle cx="36" cy="40" r="7.5" fill="none" stroke="white" stroke-width="1.2" opacity="0.25"/>
+        <!-- زجاج العدسة -->
+        <circle cx="36" cy="40" r="6" fill="url(#lensGrad)"/>
+        <!-- بريق العدسة -->
+        <circle cx="33" cy="37.5" r="1.5" fill="white" opacity="0.55"/>
+        <circle cx="32.5" cy="36.8" r=".6" fill="white" opacity="0.35"/>
+        <!-- زر الشاتر -->
+        <circle cx="58" cy="31" r="3.5" fill="#0a0a0a" opacity="0.18"/>
+        <circle cx="58" cy="31" r="2.5" fill="#333"/>
+        <defs>
+          <radialGradient id="lensGrad" cx="40%" cy="35%" r="70%">
+            <stop offset="0%" stop-color="#4a6fa5"/>
+            <stop offset="55%" stop-color="#1a2f52"/>
+            <stop offset="100%" stop-color="#0d1a30"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <div class="logo-wordmark">طلعة</div>
+      <div class="logo-sub">شارك ذكريات لحظاتك</div>
+    </div>
+
+    <div class="auth-card">
+
+      <!-- Segment control (hidden in forgot mode) -->
+      <div class="seg-wrap" id="segWrap">
+        <div class="seg" id="authSeg">
+          <button class="seg-btn active" onclick="switchAuth('login')">تسجيل الدخول</button>
+          <button class="seg-btn" onclick="switchAuth('register')">حساب جديد</button>
+        </div>
+      </div>
+
+      <!-- Forgot header (shown instead of seg in forgot mode) -->
+      <div class="forgot-hd" id="forgotHd">
+        <button class="btn-icon btn-sm" onclick="switchAuth('login')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 4 6 8 10 12"/></svg>
+        </button>
+        <span class="forgot-hd-title">استعادة كلمة المرور</span>
+      </div>
+
+      <div class="auth-body">
+
+        <!-- ── LOGIN ── -->
+        <div class="auth-panel active" id="panel-login">
+          <div class="field">
+            <label class="field-lbl">البريد الإلكتروني</label>
+            <div class="field-row">
+              <span class="field-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="2"/><polyline points="1,3 8,9.5 15,3"/></svg>
+              </span>
+              <input class="f-input" id="li-email" type="email" placeholder="example@email.com" autocomplete="email" inputmode="email" dir="ltr"/>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-lbl">كلمة المرور</label>
+            <div class="field-row">
+              <span class="field-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/><circle cx="8" cy="11" r="1" fill="currentColor"/></svg>
+              </span>
+              <input class="f-input has-eye" id="li-pass" type="password" placeholder="كلمة المرور" autocomplete="current-password"/>
+              <span class="field-eye" id="li-eye" onclick="toggleEye('li-pass','li-eye')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg>
+              </span>
+            </div>
+          </div>
+          <div class="ferr" id="li-err"></div>
+          <button class="btn btn-ghost btn-sm" style="font-size:.8rem;letter-spacing:0;padding:.4rem .5rem;justify-content:flex-end;width:auto;align-self:flex-end;color:var(--fg3);" onclick="switchAuth('forgot')">
+            نسيت كلمة المرور؟
+          </button>
+          <button class="btn btn-fill" id="liBtn" onclick="doLogin()" style="margin-top:-.2rem;">
+            <span class="btn-lbl">تسجيل الدخول</span>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="7.5" x2="13" y2="7.5"/><polyline points="8,3 13,7.5 8,12"/></svg>
+          </button>
+        </div>
+
+        <!-- ── REGISTER ── -->
+        <div class="auth-panel" id="panel-register">
+          <div class="field">
+            <label class="field-lbl">الاسم</label>
+            <div class="field-row">
+              <span class="field-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5.5" r="3"/><path d="M2 15c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+              </span>
+              <input class="f-input" id="rg-name" type="text" placeholder="اسمك الكامل" autocomplete="name"/>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-lbl">البريد الإلكتروني</label>
+            <div class="field-row">
+              <span class="field-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="2"/><polyline points="1,3 8,9.5 15,3"/></svg>
+              </span>
+              <input class="f-input" id="rg-email" type="email" placeholder="example@email.com" inputmode="email" dir="ltr"/>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-lbl">كلمة المرور</label>
+            <div class="field-row">
+              <span class="field-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/><circle cx="8" cy="11" r="1" fill="currentColor"/></svg>
+              </span>
+              <input class="f-input has-eye" id="rg-pass" type="password" placeholder="٨ أحرف على الأقل"/>
+              <span class="field-eye" id="rg-eye" onclick="toggleEye('rg-pass','rg-eye')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg>
+              </span>
+            </div>
+          </div>
+          <div class="ferr" id="rg-err"></div>
+          <!-- موافقة على الشروط — إلزامية قبل إنشاء الحساب -->
+          <div class="terms-check-row">
+            <input type="checkbox" id="rg-terms" class="terms-cb"/>
+            <label for="rg-terms" class="terms-cb-lbl">
+              أوافق على
+              <button type="button" class="terms-inline-link" onclick="openModal('m-terms')">شروط الاستخدام وسياسة الخصوصية</button>
+            </label>
+          </div>
+          <button class="btn btn-fill" id="rgBtn" onclick="doRegister()">
+            <span class="btn-lbl">إنشاء الحساب</span>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7.5" y1="1" x2="7.5" y2="14"/><line x1="1" y1="7.5" x2="14" y2="7.5"/></svg>
+          </button>
+        </div>
+
+        <!-- ── FORGOT PASSWORD ── -->
+        <div class="auth-panel" id="panel-forgot">
+          <div id="fp-form">
+            <p style="font-size:.84rem;color:var(--fg3);line-height:1.7;margin-bottom:.9rem;">
+              أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.
+            </p>
+            <div class="field" style="margin-bottom:.8rem;">
+              <label class="field-lbl">البريد الإلكتروني</label>
+              <div class="field-row">
+                <span class="field-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="2"/><polyline points="1,3 8,9.5 15,3"/></svg>
+                </span>
+                <input class="f-input" id="fp-email" type="email" placeholder="example@email.com" dir="ltr"/>
+              </div>
+            </div>
+            <div class="ferr" id="fp-err" style="margin-bottom:.8rem;"></div>
+            <button class="btn btn-fill" id="fpBtn" onclick="doForgot()">
+              <span class="btn-lbl">إرسال رابط الاستعادة</span>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="7.5" x2="13" y2="7.5"/><polyline points="8,3 13,7.5 8,12"/></svg>
+            </button>
+          </div>
+          <div class="fp-sent" id="fp-sent">
+            <div class="fp-sent-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="fp-sent-title">تم الإرسال</div>
+            <div class="fp-sent-sub" id="fp-sent-sub">تفقد بريدك الإلكتروني واتبع الرابط لإعادة تعيين كلمة المرور.</div>
+            <button class="btn btn-outline btn-sm" style="margin-top:.5rem;" onclick="switchAuth('login')">
+              العودة لتسجيل الدخول
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      <div style="margin-bottom:.45rem;">مرتبط بـ Firebase · البيانات محمية</div>
+      <button class="terms-link" onclick="openModal('m-terms')">شروط الاستخدام وسياسة الخصوصية</button>
+      <div class="nawwa-credit">تم التطوير بواسطة <span>Nawwacode</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════ -->
+<div class="screen" id="s-dash">
+  <nav class="topbar">
+    <div class="tb-logo">
+      <svg class="tb-logo-mark" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="26" height="26" rx="6.5" fill="#0a0a0a"/>
+        <rect x="5.5" y="6.5" width="15" height="2.8" rx="1.4" fill="white"/>
+        <rect x="5.5" y="9.3" width="2.8" height="7" rx="1.4" fill="white"/>
+        <rect x="17.7" y="9.3" width="2.8" height="7" rx="1.4" fill="white"/>
+        <circle cx="13" cy="16.5" r="2.4" fill="white"/>
+        <circle cx="13" cy="16.5" r="1.1" fill="#0a0a0a"/>
+      </svg>
+      طلعة
+    </div>
+    <div class="tb-right">
+      <div class="avatar" id="avatarBtn" onclick="toggleDrop()"></div>
+      <div class="prof-drop" id="profDrop">
+        <div class="pd-head">
+          <div class="pd-name" id="pdName">—</div>
+          <div class="pd-email" id="pdEmail">—</div>
+        </div>
+        <div class="divider"></div>
+        <div class="pd-item red" onclick="doLogout()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 7.5h8M11 5l2.5 2.5L11 10"/><path d="M8 3.5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6"/></svg>
+          تسجيل الخروج
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dash-scroll">
+    <div class="greeting">
+      <div class="g-line1" id="greetTime">صباح الخير</div>
+      <div class="g-line2">أهلاً، <span id="greetName">—</span></div>
+    </div>
+    <div class="action-row">
+      <button class="ac ac-dark" onclick="openModal('m-create')">
+        <div class="ac-icon-box">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="20" height="15" rx="3"/><circle cx="11" cy="13" r="4"/><circle cx="11" cy="13" r="1.5" fill="white"/><rect x="7" y="2" width="4" height="3.5" rx="1.5"/><circle cx="17.5" cy="8" r="1" fill="white"/></svg>
+        </div>
+        <div><div class="ac-title">غرفة جديدة</div><div class="ac-sub">أنشئ وشارك الكود</div></div>
+      </button>
+      <button class="ac ac-light" onclick="openModal('m-join')">
+        <div class="ac-icon-box">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="14" height="11" rx="2.5"/><path d="M8 9V6.5a4 4 0 0 1 8 0V9"/><circle cx="12" cy="15" r="1.5" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div><div class="ac-title">دخول غرفة</div><div class="ac-sub">أدخل الكود</div></div>
+      </button>
+    </div>
+    <div>
+      <div class="sec-hd">
+        <span class="sec-title">غرفي</span>
+        <button class="btn btn-ghost btn-sm" style="width:auto" onclick="loadRooms()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 7a5.5 5.5 0 1 0 .6-2.5"/><polyline points="1.5,1.5 1.5,5 5,5"/></svg>
+          تحديث
+        </button>
+      </div>
+      <div class="rooms-list" id="roomsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     ROOM SCREEN (معدل مع زر الحذف)
+════════════════════════════════════════════ -->
+<div class="screen" id="s-room">
+  <nav class="room-topbar">
+    <button class="btn-icon" onclick="goToDash()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 4 6 9 11 14"/></svg>
+    </button>
+    <div class="rtb-center">
+      <div class="rtb-title" id="rtbTitle">—</div>
+      <div class="rtb-sub" id="rtbSub">٠ صورة</div>
+    </div>
+    <div style="display:flex; gap:.4rem;">
+      <button class="btn-icon" onclick="showCodeSheet()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="5" width="15" height="10" rx="2.5"/><path d="M5 5V3.5a3 3 0 0 1 6 0V5"/><circle cx="9" cy="10.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <button class="btn-icon" style="color:var(--danger);" onclick="openModal('m-delete-room')">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 15 6"></polyline>
+          <path d="M5 6v9a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6"></path>
+          <line x1="10" y1="9" x2="10" y2="14"></line>
+          <line x1="7" y1="9" x2="7" y2="14"></line>
+          <line x1="14" y1="4" x2="4" y2="4"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <div class="room-body">
+    <div class="room-strip">
+      <div class="rs-l">
+        <div class="rs-name" id="rsName">—</div>
+        <div class="rs-timer-row">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="7" r="4.5"/><polyline points="6.5,4.5 6.5,7 8,8.5"/><line x1="4" y1="1" x2="9" y2="1"/></svg>
+          <span class="live-timer" id="liveTimer">—</span>
+        </div>
+      </div>
+      <button class="code-pill" id="codePill" onclick="showCodeSheet()">——</button>
+    </div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)"/>
+      <div class="uz-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.4 15.5A7 7 0 1 0 7 8.4"/></svg>
+      </div>
+      <div class="uz-title">ارفع صور الطلعة</div>
+      <div class="uz-sub">اسحب وأفلت أو اضغط للاختيار</div>
+    </div>
+    <div class="prog" id="progBar"><div class="prog-fill" id="progFill"></div></div>
+    <div>
+      <div class="gallery-head">
+        <span class="gh-title">الصور</span>
+        <span class="gh-cnt" id="galCnt">٠</span>
+      </div>
+      <div class="photo-grid" id="photoGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: CREATE ROOM ════ -->
+<div class="overlay" id="m-create">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sh-title">غرفة جديدة</div>
+    <div class="sh-sub">سمّ طلعتك وحدد المدة — ينتهي الكود تلقائياً عند انتهائها.</div>
+    <div class="field" style="margin-bottom:1.3rem;">
+      <label class="field-lbl">اسم الطلعة</label>
+      <div class="field-row">
+        <span class="field-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="5" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="9" y2="12"/></svg>
+        </span>
+        <input class="f-input" id="cr-name" type="text" placeholder="مثال: طلعة الجبل" maxlength="40"/>
+      </div>
+    </div>
+    <label class="field-lbl" style="margin-bottom:.7rem;">مدة الغرفة</label>
+    <div class="dur-display">
+      <div class="dur-value" id="durValue">24:00:00</div>
+      <div class="dur-label" id="durLabel">24 ساعة (الحد الأقصى)</div>
+    </div>
+    <div class="slider-track" id="sliderTrack">
+      <div class="slider-bg"><div class="slider-fill" id="sliderFill" style="width:100%"></div></div>
+      <div class="slider-thumb" id="sliderThumb" style="left:100%"></div>
+    </div>
+    <div class="slider-labels"><span>1 ثانية</span><span>6 ساعات</span><span>12 ساعة</span><span>24 ساعة</span></div>
+    <div class="presets" id="presetsRow">
+      <button class="preset-btn" data-s="3600"  onclick="setPreset(this)">ساعة</button>
+      <button class="preset-btn" data-s="10800" onclick="setPreset(this)">3 ساعات</button>
+      <button class="preset-btn" data-s="21600" onclick="setPreset(this)">6 ساعات</button>
+      <button class="preset-btn" data-s="43200" onclick="setPreset(this)">12 ساعة</button>
+      <button class="preset-btn sel" data-s="86400" onclick="setPreset(this)">24 ساعة</button>
+    </div>
+    <div class="ferr" id="cr-err"></div>
+    <button class="btn btn-fill" id="createBtn" onclick="doCreateRoom()">
+      <span class="btn-lbl">إنشاء الغرفة</span>
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="7.5" y1="1" x2="7.5" y2="14"/><line x1="1" y1="7.5" x2="14" y2="7.5"/></svg>
+    </button>
+    <button class="btn btn-ghost btn-sm" style="margin-top:.5rem;" onclick="closeModal('m-create')">إلغاء</button>
+  </div>
+</div>
+
+<!-- ════ MODAL: JOIN ROOM ════ -->
+<div class="overlay" id="m-join">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sh-title">دخول غرفة</div>
+    <div class="sh-sub">أدخل كود الغرفة المكون من 6 أحرف.</div>
+    <div class="field">
+      <input class="f-input code-join-inp" id="join-code" type="text" maxlength="6" placeholder="A1B2C3" autocomplete="off" dir="ltr" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"/>
+    </div>
+    <div class="ferr" id="jn-err" style="margin-top:.6rem;"></div>
+    <button class="btn btn-fill" style="margin-top:1.1rem;" id="joinBtn" onclick="doJoin()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 4 6 8 11 12"/></svg>
+      <span class="btn-lbl">ادخل الغرفة</span>
+    </button>
+    <button class="btn btn-ghost btn-sm" style="margin-top:.5rem;" onclick="closeModal('m-join')">إلغاء</button>
+  </div>
+</div>
+
+<!-- ════ MODAL: ROOM CODE ════ -->
+<div class="overlay center-mode" id="m-code">
+  <div class="sheet ctr" style="max-width:360px;">
+    <div style="text-align:center;">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto .7rem;">
+        <rect width="40" height="40" rx="12" fill="#f0f0f0"/>
+        <rect x="8" y="15" width="24" height="16" rx="3" stroke="#0a0a0a" stroke-width="1.8" fill="none"/>
+        <path d="M14 15V12a6 6 0 0 1 12 0v3" stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <circle cx="20" cy="23" r="2" fill="#0a0a0a"/>
+        <line x1="20" y1="25" x2="20" y2="28" stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sh-title" style="font-size:1rem;">كود الغرفة</div>
+      <div class="sh-sub" style="margin-bottom:0;font-size:.8rem;">شاركه مع أصحابك ليدخلوا الغرفة</div>
+    </div>
+    <div class="code-reveal" style="margin-top:1.2rem;">
+      <div class="code-chars" id="codeChars"></div>
+      <div class="code-exp-note" id="codeExpNote">—</div>
+    </div>
+    <button class="btn btn-fill" onclick="copyCode()">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M10 5V3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h2"/></svg>
+      <span class="btn-lbl">نسخ الكود</span>
+    </button>
+    <button class="btn btn-ghost btn-sm" style="margin-top:.5rem;" onclick="closeModal('m-code')">إغلاق</button>
+  </div>
+</div>
+
+<!-- ════ MODAL: DELETE ROOM (جديد) ════ -->
+<div class="overlay center-mode" id="m-delete-room">
+  <div class="sheet ctr" style="max-width:340px;">
+    <div style="text-align:center;">
+      <div style="width:56px;height:56px;background:rgba(224,51,51,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0h10"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+      </div>
+      <div class="sh-title" style="color:var(--danger);">حذف الغرفة</div>
+      <div class="sh-sub" style="margin-bottom:1.5rem;">
+        هل أنت متأكد من حذف <strong id="deleteRoomName">هذه الغرفة</strong>؟<br>
+        سيتم حذف جميع الصور نهائياً ولا يمكن التراجع.
+      </div>
+    </div>
+    <button class="btn btn-danger-soft" id="deleteRoomBtn" onclick="doDeleteRoom()">
+      <span class="btn-lbl">نعم، احذف الغرفة</span>
+    </button>
+    <button class="btn btn-ghost btn-sm" style="margin-top:.5rem;" onclick="closeModal('m-delete-room')">
+      إلغاء
+    </button>
+  </div>
+</div>
+
+<!-- ════ MODAL: TERMS OF SERVICE ════ -->
+<div class="overlay center-mode" id="m-terms">
+  <div class="sheet ctr" style="max-width:480px;max-height:88dvh;display:flex;flex-direction:column;padding:0;overflow:hidden;">
+    <!-- Header ثابت -->
+    <div style="padding:1.4rem 1.5rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.3rem;">
+        <div style="width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11.5A6.5 6.5 0 1 1 6.5 3H9"/><polyline points="14 2 18 2 18 6"/><line x1="10" y1="8" x2="18" y2="2"/></svg>
+        </div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;letter-spacing:-.02em;">شروط الاستخدام وسياسة الخصوصية</div>
+          <div style="font-size:.73rem;color:var(--fg4);margin-top:.1rem;">آخر تحديث: يناير ٢٠٢٥</div>
+        </div>
+      </div>
+    </div>
+    <!-- المحتوى قابل للتمرير -->
+    <div class="terms-body" style="overflow-y:auto;flex:1;padding:1.2rem 1.5rem;-webkit-overflow-scrolling:touch;">
+
+      <div class="terms-section">
+        <div class="terms-section-title">١. القبول بالشروط</div>
+        <p>باستخدامك تطبيق <strong>طلعة</strong> أو إنشائك حساباً فيه، فإنك توافق صراحةً على الالتزام بجميع الشروط والأحكام الواردة في هذه الوثيقة. إذا كنت لا توافق على أي جزء منها، يُرجى عدم استخدام التطبيق.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٢. وصف الخدمة</div>
+        <p>طلعة هو تطبيق لمشاركة الصور داخل غرف مؤقتة مع مجموعات صغيرة. تنتهي كل غرفة تلقائياً بعد المدة المحددة عند إنشائها، وقد تُحذف محتوياتها بعد انتهاء المدة.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٣. المحتوى المحظور</div>
+        <p>يُحظر صراحةً رفع أو مشاركة أي محتوى يتضمن:</p>
+        <ul class="terms-list">
+          <li>صوراً أو محتوى إباحياً أو جنسياً صريحاً</li>
+          <li>محتوى يتعلق بالأطفال بأي شكل مسيء</li>
+          <li>صوراً تنتهك خصوصية أشخاص آخرين دون موافقتهم</li>
+          <li>محتوى يحرّض على العنف أو الكراهية أو التمييز</li>
+          <li>صوراً تخالف قوانين البلد المُستخدَم فيه التطبيق</li>
+          <li>أي محتوى يمثّل انتهاكاً لحقوق الملكية الفكرية</li>
+        </ul>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٤. مسؤولية المستخدم</div>
+        <p>أنت تتحمل المسؤولية الكاملة والحصرية عن كل محتوى ترفعه أو تشاركه عبر التطبيق. لا تتحمل <strong>Nawwacode</strong> أو فريق تطوير التطبيق أي مسؤولية قانونية أو أدبية عن المحتوى الذي يرفعه المستخدمون.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٥. حقوق المحتوى</div>
+        <p>تحتفظ بملكية الصور التي ترفعها. بمجرد الرفع، تمنح التطبيق ترخيصاً محدوداً لعرض تلك الصور للأعضاء المدعوّين في الغرفة ذاتها فحسب.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٦. سياسة الخصوصية والبيانات</div>
+        <p>نحترم خصوصيتك. يتم جمع البيانات التالية لأغراض تشغيل الخدمة فقط:</p>
+        <ul class="terms-list">
+          <li>البريد الإلكتروني والاسم: لإنشاء حسابك والتعرف عليك</li>
+          <li>الصور المرفوعة: تُخزَّن مؤقتاً في Cloudinary وتُربط بالغرفة</li>
+          <li>بيانات الغرف: تُحفظ في Firebase Firestore</li>
+        </ul>
+        <p style="margin-top:.6rem;">لا نشارك بياناتك مع أطراف ثالثة لأغراض تجارية. يمكنك حذف حسابك في أي وقت بالتواصل مع الدعم.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٧. إنهاء الحساب</div>
+        <p>نحتفظ بالحق في تعليق أي حساب أو حذفه فوراً في حال ثبوت انتهاكه لهذه الشروط، وذلك دون إشعار مسبق.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٨. إخلاء المسؤولية</div>
+        <p>يُقدَّم التطبيق "كما هو" دون أي ضمانات صريحة أو ضمنية. لا تتحمل Nawwacode مسؤولية أي خسائر مباشرة أو غير مباشرة ناتجة عن استخدامك للتطبيق أو الاعتماد عليه.</p>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-section-title">٩. التعديلات</div>
+        <p>قد نُعدِّل هذه الشروط في أي وقت. استمرارك في استخدام التطبيق بعد نشر أي تعديلات يُعدّ قبولاً منك لها.</p>
+      </div>
+
+      <div class="terms-dev-note">
+        تم التطوير بواسطة <strong>Nawwacode</strong> · جميع الحقوق محفوظة © ٢٠٢٥
+      </div>
+
+    </div>
+    <!-- Footer ثابت -->
+    <div style="padding:.9rem 1.5rem 1.2rem;border-top:1px solid var(--border);flex-shrink:0;">
+      <button class="btn btn-fill" onclick="closeModal('m-terms')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 6 11 12 3"/></svg>
+        <span class="btn-lbl">فهمت وأوافق على الشروط</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FIREBASE + CLOUDINARY ════ -->
+<script type="module">
+/* ══════════════════════════════════════════════
+   FIREBASE SETUP
+══════════════════════════════════════════════ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+         sendPasswordResetEmail, signOut, onAuthStateChanged, updateProfile }
+         from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, where,
+         getDocs, addDoc, onSnapshot, orderBy, updateDoc, arrayUnion, deleteDoc }
+         from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBaT__OmHY3m9tNkmaFgea1UFfJTLLvNyg",
+  authDomain: "talaa-f5dc4.firebaseapp.com",
+  projectId: "talaa-f5dc4",
+  storageBucket: "talaa-f5dc4.firebasestorage.app",
+  messagingSenderId: "465217697128",
+  appId: "1:465217697128:web:58d46741af0a5e5c0352dd"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ══════════════════════════════════════════════
+   CLOUDINARY CONFIGURATION
+   ⚠️ تحسين أمني: تم إزالة apiKey و apiSecret بالكامل.
+   لا يجب أبداً كشف المفاتيح السرية في كود الواجهة (client-side).
+   الرفع الآن يعتمد على Unsigned Upload Preset فقط،
+   وهو الأسلوب الآمن الموصى به من Cloudinary للواجهات الأمامية.
+══════════════════════════════════════════════ */
+const CLOUDINARY = {
+  cloudName: "dli9sa9sk",
+  uploadPreset: "talaaa",   // Unsigned Upload Preset — آمن للكشف في الواجهة
+  folder: "rooms"
+};
+
+/* ══════════════════════════════════════════════
+   APP STATE
+══════════════════════════════════════════════ */
+const A = {
+  user: null,
+  room: null,
+  photos: [],
+  lbIdx: -1,
+  unsubPhotos: null,
+  timerIv: null,
+};
+
+/* ══════════════════════════════════════════════
+   ثوابت الأمان — Security Constants
+   تحسين أمني: تجميع قيم الحماية في مكان واحد لسهولة الإدارة.
+══════════════════════════════════════════════ */
+const SECURITY = {
+  MAX_PHOTOS_PER_ROOM: 100,       // الحد الأقصى لعدد الصور في الغرفة
+  MAX_FILE_SIZE_MB: 10,           // الحد الأقصى لحجم الصورة بالميغابايت
+  MAX_FILE_SIZE_BYTES: 10 * 1024 * 1024,  // 10MB بالبايت
+  UPLOAD_COOLDOWN_MS: 5000,       // الحد الأدنى بين عمليات الرفع (5 ثوانٍ)
+  ALLOWED_MIME_TYPES: [           // أنواع الصور المسموح بها فقط
+    'image/jpeg', 'image/jpg', 'image/png',
+    'image/gif', 'image/webp', 'image/heic', 'image/heif'
+  ],
+};
+
+// متغير لتتبع وقت آخر رفع — لحماية Spam Upload
+let lastUploadTime = 0;
+
+/* ══════════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════════ */
+const showScreen = id => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+};
+
+const hideLoader = () => document.getElementById('appLoader').classList.add('gone');
+
+/* ══════════════════════════════════════════════
+   AUTH STATE LISTENER
+══════════════════════════════════════════════ */
+onAuthStateChanged(auth, user => {
+  if (user) {
+    A.user = user;
+    fillDash();
+    loadRooms();
+    showScreen('s-dash');
+  } else {
+    A.user = null;
+    showScreen('s-auth');
+  }
+  hideLoader();
+});
+
+/* ══════════════════════════════════════════════
+   AUTH FUNCTIONS
+══════════════════════════════════════════════ */
+window.switchAuth = (m) => {
+  const btns = document.querySelectorAll('#authSeg .seg-btn');
+  const seg = document.getElementById('segWrap');
+  const fHd = document.getElementById('forgotHd');
+
+  btns[0].classList.toggle('active', m === 'login');
+  btns[1].classList.toggle('active', m === 'register');
+  ['login', 'register', 'forgot'].forEach(p => {
+    document.getElementById('panel-' + p).classList.toggle('active', p === m);
+  });
+
+  const isForgot = m === 'forgot';
+  seg.style.display = isForgot ? 'none' : '';
+  fHd.classList.toggle('on', isForgot);
+
+  if (isForgot) {
+    document.getElementById('fp-email').value = '';
+    document.getElementById('fp-sent').classList.remove('on');
+    document.getElementById('fp-form').style.display = '';
+  }
+};
+
+window.toggleEye = (inputId, eyeId) => {
+  const inp = document.getElementById(inputId);
+  const open = inp.type === 'password';
+  inp.type = open ? 'text' : 'password';
+  document.getElementById(eyeId).innerHTML = open
+    ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><line x1="3" y1="3" x2="13" y2="13"/></svg>`
+    : `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg>`;
+};
+
+window.doLogin = async () => {
+  const email = document.getElementById('li-email').value.trim();
+  const pass = document.getElementById('li-pass').value;
+  if (!email || !pass) {
+    showFerr('li-err', 'أكمل البيانات');
+    return;
+  }
+  if (!validEmail(email)) {
+    showFerr('li-err', 'بريد إلكتروني غير صحيح');
+    return;
+  }
+  setLoad('liBtn', true);
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (e) {
+    setLoad('liBtn', false);
+    showFerr('li-err', authMsg(e.code));
+  }
+};
+
+window.doRegister = async () => {
+  const name = document.getElementById('rg-name').value.trim();
+  const email = document.getElementById('rg-email').value.trim();
+  const pass = document.getElementById('rg-pass').value;
+  if (!name) {
+    showFerr('rg-err', 'أدخل اسمك');
+    return;
+  }
+  if (!validEmail(email)) {
+    showFerr('rg-err', 'بريد إلكتروني غير صحيح');
+    return;
+  }
+  if (pass.length < 8) {
+    showFerr('rg-err', 'كلمة المرور أقل من ٨ أحرف');
+    return;
+  }
+  // التحقق من الموافقة على شروط الاستخدام — إلزامي
+  if (!document.getElementById('rg-terms').checked) {
+    showFerr('rg-err', 'يجب الموافقة على شروط الاستخدام أولاً');
+    return;
+  }
+  setLoad('rgBtn', true);
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+  } catch (e) {
+    setLoad('rgBtn', false);
+    showFerr('rg-err', authMsg(e.code));
+  }
+};
+
+window.doForgot = async () => {
+  const email = document.getElementById('fp-email').value.trim();
+  if (!validEmail(email)) {
+    showFerr('fp-err', 'أدخل بريداً إلكترونياً صحيحاً');
+    return;
+  }
+  setLoad('fpBtn', true);
+  try {
+    await sendPasswordResetEmail(auth, email);
+    setLoad('fpBtn', false);
+    document.getElementById('fp-form').style.display = 'none';
+    const sentEl = document.getElementById('fp-sent');
+    document.getElementById('fp-sent-sub').textContent =
+      `تم إرسال رابط الاستعادة إلى ${email} — تفقد بريدك الإلكتروني.`;
+    sentEl.classList.add('on');
+  } catch (e) {
+    setLoad('fpBtn', false);
+    showFerr('fp-err', authMsg(e.code));
+  }
+};
+
+window.doLogout = async () => {
+  closeDrop();
+  await signOut(auth);
+};
+
+/* ══════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════ */
+function fillDash() {
+  const u = auth.currentUser;
+  if (!u) return;
+  const name = u.displayName || u.email.split('@')[0];
+  document.getElementById('greetName').textContent = name.split(' ')[0];
+  document.getElementById('pdName').textContent = name;
+  document.getElementById('pdEmail').textContent = u.email;
+  document.getElementById('avatarBtn').textContent = name[0].toUpperCase();
+  const h = new Date().getHours();
+  document.getElementById('greetTime').textContent = h < 12 ? 'صباح الخير' : h < 17 ? 'مساء الخير' : 'مساء النور';
+}
+
+window.toggleDrop = () => document.getElementById('profDrop').classList.toggle('on');
+const closeDrop = () => document.getElementById('profDrop').classList.remove('on');
+
+document.addEventListener('click', e => {
+  const d = document.getElementById('profDrop');
+  const b = document.getElementById('avatarBtn');
+  if (d.classList.contains('on') && !d.contains(e.target) && !b.contains(e.target)) closeDrop();
+});
+
+/* ════ ROOMS LIST ════ */
+window.loadRooms = async () => {
+  if (!A.user) return;
+  try {
+    const q = query(collection(db, 'rooms'), where('members', 'array-contains', A.user.uid));
+    const snap = await getDocs(q);
+    const rooms = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.createdAt - a.createdAt);
+    renderRooms(rooms);
+  } catch (e) {
+    console.error(e);
+    toast('تعذّر تحميل الغرف', 'err');
+  }
+};
+
+function renderRooms(rooms) {
+  const list = document.getElementById('roomsList');
+  if (!rooms.length) {
+    list.innerHTML = `<div class="empty-block">
+      <div class="eb-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="7" width="30" height="22" rx="4"/>
+          <circle cx="18" cy="18" r="6"/><circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+          <rect x="12" y="3" width="6" height="5" rx="2"/><circle cx="27" cy="11" r="1.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="eb-text">لا يوجد غرف بعد — أنشئ أول طلعة</div>
+    </div>`;
+    return;
+  }
+  const now = Date.now();
+  list.innerHTML = rooms.map(r => {
+    const expired = r.expiresAt && now > r.expiresAt;
+    const rem = r.expiresAt ? r.expiresAt - now : null;
+    let dotCls = 'green', timeStr = 'دائمة';
+    if (r.expiresAt) {
+      if (expired) {
+        dotCls = 'red';
+        timeStr = 'انتهت';
+      } else if (rem < 3600000) {
+        dotCls = 'orange';
+        timeStr = fmtDur(rem);
+      } else {
+        dotCls = 'green';
+        timeStr = fmtDur(rem);
+      }
+    }
+    const cnt = r.photoCount || 0;
+    return `<div class="room-row" onclick="openRoom('${r.code}')">
+      <div class="rr-l">
+        <div class="rr-ico">${esc(r.name[0])}</div>
+        <div>
+          <div class="rr-name">${esc(r.name)}</div>
+          <div class="rr-meta"><span class="status-dot ${dotCls}"></span>${cnt} صورة · ${timeStr}</div>
+        </div>
+      </div>
+      <div class="rr-r">
+        <span class="code-tag">${r.code}</span>
+        <svg class="chevron-r" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 4 10 8 6 12"/></svg>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   DURATION SLIDER
+══════════════════════════════════════════════ */
+let durSecs = 86400;
+const MAX_S = 86400, MIN_S = 1;
+const sliderPct = s => (s - MIN_S) / (MAX_S - MIN_S);
+const secsFromPct = p => Math.round(MIN_S + p * (MAX_S - MIN_S));
+
+window.setPreset = el => updateDur(parseInt(el.dataset.s));
+
+function updateDur(s) {
+  durSecs = Math.max(MIN_S, Math.min(MAX_S, s));
+  const pct = sliderPct(durSecs) * 100;
+  document.getElementById('sliderFill').style.width = pct + '%';
+  document.getElementById('sliderThumb').style.left = pct + '%';
+  document.getElementById('durValue').textContent = fmtHMS(durSecs);
+  let lbl = '';
+  if (durSecs < 60) lbl = durSecs + ' ثانية';
+  else if (durSecs < 3600) lbl = Math.floor(durSecs / 60) + ' دقيقة';
+  else if (durSecs === 86400) lbl = '24 ساعة (الحد الأقصى)';
+  else lbl = (durSecs / 3600).toFixed(1).replace(/\.0$/, '') + ' ساعة';
+  document.getElementById('durLabel').textContent = lbl;
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('sel', parseInt(b.dataset.s) === durSecs));
+}
+
+(function initSlider() {
+  const track = document.getElementById('sliderTrack');
+  let dragging = false;
+  const fromE = e => {
+    const rect = track.getBoundingClientRect();
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    updateDur(secsFromPct(Math.max(0, Math.min(1, (x - rect.left) / rect.width))));
+  };
+  track.addEventListener('mousedown', e => { dragging = true; fromE(e); });
+  track.addEventListener('touchstart', e => { dragging = true; fromE(e); }, { passive: true });
+  document.addEventListener('mousemove', e => { if (dragging) fromE(e); });
+  document.addEventListener('touchmove', e => { if (dragging) fromE(e); }, { passive: true });
+  document.addEventListener('mouseup', () => dragging = false);
+  document.addEventListener('touchend', () => dragging = false);
+  updateDur(86400);
+})();
+
+/* ══════════════════════════════════════════════
+   CREATE ROOM
+══════════════════════════════════════════════ */
+window.doCreateRoom = async () => {
+  // تحسين أمني: التحقق من أن المستخدم مسجّل قبل إنشاء الغرفة
+  if (!A.user) {
+    toast('يجب تسجيل الدخول أولاً لإنشاء غرفة', 'err');
+    return;
+  }
+
+  const name = document.getElementById('cr-name').value.trim();
+  if (!name) {
+    showFerr('cr-err', 'اكتب اسم الطلعة أولاً');
+    return;
+  }
+  setLoad('createBtn', true);
+  try {
+    const code = genCode();
+    const now = Date.now();
+    const roomData = {
+      code,
+      name,
+      createdBy: A.user.uid,
+      members: [A.user.uid],
+      createdAt: now,
+      expiresAt: now + durSecs * 1000,
+      photoCount: 0,
+    };
+    await setDoc(doc(db, 'rooms', code), roomData);
+    setLoad('createBtn', false);
+    closeModal('m-create');
+    document.getElementById('cr-name').value = '';
+    await loadRooms();
+    await openRoom(code);
+    setTimeout(showCodeSheet, 420);
+  } catch (e) {
+    setLoad('createBtn', false);
+    console.error(e);
+    toast('حدث خطأ أثناء الإنشاء', 'err');
+  }
+};
+
+/* ══════════════════════════════════════════════
+   JOIN ROOM
+══════════════════════════════════════════════ */
+window.doJoin = async () => {
+  // تحسين أمني: التحقق من أن المستخدم مسجّل قبل الدخول للغرفة
+  if (!A.user) {
+    toast('يجب تسجيل الدخول أولاً للدخول إلى غرفة', 'err');
+    return;
+  }
+
+  const code = document.getElementById('join-code').value.trim().toUpperCase();
+  if (code.length < 4) {
+    showFerr('jn-err', 'الكود ناقص');
+    return;
+  }
+  setLoad('joinBtn', true);
+  try {
+    const snap = await getDoc(doc(db, 'rooms', code));
+    if (!snap.exists()) {
+      setLoad('joinBtn', false);
+      showFerr('jn-err', 'لم يتم العثور على غرفة بهذا الكود');
+      return;
+    }
+    const room = snap.data();
+    if (room.expiresAt && Date.now() > room.expiresAt) {
+      setLoad('joinBtn', false);
+      showFerr('jn-err', 'انتهت مدة هذه الغرفة');
+      return;
+    }
+    if (!room.members.includes(A.user.uid)) {
+      await updateDoc(doc(db, 'rooms', code), { members: arrayUnion(A.user.uid) });
+    }
+    setLoad('joinBtn', false);
+    closeModal('m-join');
+    await loadRooms();
+    await openRoom(code);
+  } catch (e) {
+    setLoad('joinBtn', false);
+    console.error(e);
+    toast('حدث خطأ، حاول مجدداً', 'err');
+  }
+};
+
+/* ══════════════════════════════════════════════
+   ROOM SCREEN
+══════════════════════════════════════════════ */
+window.openRoom = async (code) => {
+  // تحسين أمني: التحقق من أن المستخدم مسجّل قبل فتح الغرفة
+  if (!A.user) {
+    toast('يجب تسجيل الدخول أولاً', 'err');
+    return;
+  }
+
+  try {
+    const snap = await getDoc(doc(db, 'rooms', code));
+    if (!snap.exists()) {
+      toast('الغرفة غير موجودة', 'err');
+      return;
+    }
+    A.room = { id: snap.id, ...snap.data() };
+
+    // تحسين أمني: التحقق من أن المستخدم عضو في الغرفة قبل السماح له بالدخول
+    if (!A.room.members || !A.room.members.includes(A.user.uid)) {
+      toast('ليس لديك صلاحية الدخول إلى هذه الغرفة', 'err');
+      A.room = null;
+      return;
+    }
+
+    document.getElementById('rtbTitle').textContent = A.room.name;
+    document.getElementById('rsName').textContent = A.room.name;
+    document.getElementById('codePill').textContent = A.room.code;
+    document.getElementById('deleteRoomName').textContent = A.room.name;
+
+    // تحسين أمني: إظهار زر الحذف فقط لصاحب الغرفة (المنشئ)
+    const deleteBtn = document.querySelector('.room-topbar button[onclick="openModal(\'m-delete-room\')"]');
+    if (deleteBtn) {
+      deleteBtn.style.display = (A.room.createdBy === A.user.uid) ? '' : 'none';
+    }
+
+    if (A.timerIv) clearInterval(A.timerIv);
+    tickTimer();
+    A.timerIv = setInterval(tickTimer, 1000);
+
+    if (A.unsubPhotos) A.unsubPhotos();
+    A.unsubPhotos = onSnapshot(
+      query(collection(db, 'rooms', code, 'photos'), orderBy('uploadedAt', 'asc')),
+      snap => {
+        A.photos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderGallery();
+      }
+    );
+
+    showScreen('s-room');
+  } catch (e) {
+    console.error(e);
+    toast('تعذّر فتح الغرفة', 'err');
+  }
+};
+
+window.goToDash = () => {
+  if (A.timerIv) clearInterval(A.timerIv);
+  if (A.unsubPhotos) {
+    A.unsubPhotos();
+    A.unsubPhotos = null;
+  }
+  showScreen('s-dash');
+  loadRooms();
+};
+
+function tickTimer() {
+  const r = A.room;
+  if (!r) return;
+  const el = document.getElementById('liveTimer');
+  const cnt = A.photos.length;
+  document.getElementById('rtbSub').textContent = cnt + ' صورة';
+  document.getElementById('galCnt').textContent = cnt + ' صورة';
+  const rem = r.expiresAt - Date.now();
+  if (rem <= 0) {
+    el.textContent = 'انتهت المدة';
+    el.className = 'live-timer danger';
+    return;
+  }
+  el.className = 'live-timer' + (rem < 3600000 ? rem < 600000 ? ' danger' : ' warn' : '');
+  el.textContent = fmtHMS(Math.floor(rem / 1000));
+}
+
+/* ════ DELETE ROOM ════ */
+window.doDeleteRoom = async () => {
+  if (!A.room || !A.room.code) {
+    toast('الغرفة غير موجودة', 'err');
+    return;
+  }
+
+  // تحسين أمني: التحقق من أن المستخدم المسجّل هو صاحب الغرفة فعلاً
+  if (!A.user) {
+    toast('يجب تسجيل الدخول', 'err');
+    return;
+  }
+  if (A.room.createdBy !== A.user.uid) {
+    toast('فقط صاحب الغرفة يمكنه حذفها', 'err');
+    closeModal('m-delete-room');
+    return;
+  }
+
+  setLoad('deleteRoomBtn', true);
+  
+  try {
+    const roomCode = A.room.code;
+    const roomName = A.room.name;
+    const photoCount = A.photos.length;
+
+    // ملاحظة أمنية: حذف الصور من Cloudinary يتطلب API Secret،
+    // ولا يجب كشف هذا المفتاح في كود الواجهة أبداً.
+    // الحل الصحيح هو استخدام Cloud Function أو Backend للحذف من Cloudinary.
+    // هنا نحذف فقط السجلات من Firestore، وتُترك الصور في Cloudinary
+    // لتُحذف لاحقاً بواسطة خدمة خلفية أو يدوياً.
+
+    // 1. حذف جميع مستندات الصور من Firestore
+    const photosRef = collection(db, 'rooms', roomCode, 'photos');
+    const photosSnap = await getDocs(photosRef);
+    
+    const deletePromises = photosSnap.docs.map(d => 
+      deleteDoc(d.ref).catch(e => console.error('فشل حذف صورة من Firestore:', e))
+    );
+    await Promise.all(deletePromises);
+    
+    // 2. حذف الغرفة نفسها من Firestore
+    await deleteDoc(doc(db, 'rooms', roomCode));
+    
+    // 3. إغلاق المودال والعودة للداشبورد
+    closeModal('m-delete-room');
+    toast(`تم حذف الغرفة "${roomName}" و ${photoCount} صورة بنجاح`);
+    
+    // 4. إلغاء الـ listeners والعودة للداشبورد
+    if (A.timerIv) clearInterval(A.timerIv);
+    if (A.unsubPhotos) {
+      A.unsubPhotos();
+      A.unsubPhotos = null;
+    }
+    
+    A.room = null;
+    A.photos = [];
+    
+    showScreen('s-dash');
+    loadRooms();
+    
+  } catch (e) {
+    console.error('خطأ في حذف الغرفة:', e);
+    toast('حدث خطأ أثناء الحذف', 'err');
+  } finally {
+    setLoad('deleteRoomBtn', false);
+  }
+};
+const uz = document.getElementById('uploadZone');
+['dragenter', 'dragover'].forEach(n => uz.addEventListener(n, e => { e.preventDefault(); uz.classList.add('drag'); }));
+['dragleave', 'drop'].forEach(n => uz.addEventListener(n, e => { e.preventDefault(); uz.classList.remove('drag'); }));
+uz.addEventListener('drop', e => { e.preventDefault(); handleFiles(e.dataTransfer.files); });
+
+window.handleFiles = async (files) => {
+  if (!files?.length) return;
+
+  // تحسين أمني: التحقق من أن المستخدم مسجّل قبل السماح بالرفع
+  if (!A.user) {
+    toast('يجب تسجيل الدخول لرفع الصور', 'err');
+    return;
+  }
+
+  if (!A.room || !A.room.expiresAt) {
+    toast('الغرفة غير صالحة للرفع', 'err');
+    return;
+  }
+
+  // تحسين أمني: حماية من Spam — منع الرفع السريع والمتكرر
+  const now = Date.now();
+  if (now - lastUploadTime < SECURITY.UPLOAD_COOLDOWN_MS) {
+    const remaining = Math.ceil((SECURITY.UPLOAD_COOLDOWN_MS - (now - lastUploadTime)) / 1000);
+    toast(`انتظر ${remaining} ثوانٍ قبل الرفع مجدداً`, 'err');
+    return;
+  }
+
+  // تحسين أمني: السماح بالصور فقط بناءً على MIME type الحقيقي وامتداد الملف
+  const arr = Array.from(files).filter(f => {
+    const isAllowedMime = SECURITY.ALLOWED_MIME_TYPES.includes(f.type);
+    const ext = f.name.split('.').pop().toLowerCase();
+    const isAllowedExt = ['jpg','jpeg','png','gif','webp','heic','heif'].includes(ext);
+    return isAllowedMime && isAllowedExt;
+  });
+
+  if (!arr.length) {
+    toast('يُسمح فقط بملفات الصور (JPG, PNG, GIF, WEBP)', 'err');
+    return;
+  }
+
+  // تحسين أمني: التحقق من حجم كل ملف قبل الرفع (الحد الأقصى 10MB)
+  const oversized = arr.filter(f => f.size > SECURITY.MAX_FILE_SIZE_BYTES);
+  if (oversized.length > 0) {
+    const names = oversized.map(f => f.name).join('، ');
+    toast(`هذه الصور تتجاوز ${SECURITY.MAX_FILE_SIZE_MB}MB: ${names}`, 'err');
+    return;
+  }
+
+  // تحسين أمني: التحقق من عدم تجاوز الحد الأقصى لعدد الصور في الغرفة
+  const currentCount = A.photos.length;
+  const remaining = SECURITY.MAX_PHOTOS_PER_ROOM - currentCount;
+  if (remaining <= 0) {
+    toast(`وصلت الغرفة للحد الأقصى (${SECURITY.MAX_PHOTOS_PER_ROOM} صورة)`, 'err');
+    return;
+  }
+  const filesToUpload = arr.slice(0, remaining);
+  if (filesToUpload.length < arr.length) {
+    toast(`سيتم رفع ${filesToUpload.length} صورة فقط (الحد الأقصى ${SECURITY.MAX_PHOTOS_PER_ROOM})`, 'err');
+  }
+
+  // تسجيل وقت بداية الرفع لحماية Spam
+  lastUploadTime = Date.now();
+
+  const bar = document.getElementById('progBar');
+  const fill = document.getElementById('progFill');
+  bar.classList.add('on');
+
+  let done = 0;
+  const total = filesToUpload.length;
+  const updateProg = () => { fill.style.width = (done / total * 100) + '%'; };
+
+  const expiresAt = Math.floor(A.room.expiresAt / 1000);
+
+  const uploadOne = async (file) => {
+    try {
+      // رفع الصورة باستخدام Unsigned Upload (cloudName + uploadPreset فقط)
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY.uploadPreset);
+      formData.append('cloud_name', CLOUDINARY.cloudName);
+      formData.append('folder', `${CLOUDINARY.folder}/${A.room.code}`);
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('فشل الرفع إلى Cloudinary');
+
+      const data = await response.json();
+
+      await addDoc(collection(db, 'rooms', A.room.code, 'photos'), {
+        name: file.name,
+        url: data.secure_url,
+        publicId: data.public_id,
+        format: data.format,
+        width: data.width,
+        height: data.height,
+        uploadedBy: A.user.uid,
+        uploadedAt: Date.now(),
+        expiresAt: A.room.expiresAt
+      });
+
+      done++;
+      updateProg();
+      toast(`تم رفع ${file.name}`);
+    } catch (e) {
+      console.error('Upload error:', e);
+      toast(`فشل رفع ${file.name}`, 'err');
+      done++;
+      updateProg();
+    }
+  };
+
+  // رفع متوازي: حتى 3 صور في نفس الوقت
+  const BATCH = 3;
+  for (let i = 0; i < filesToUpload.length; i += BATCH) {
+    const batch = filesToUpload.slice(i, i + BATCH);
+    await Promise.all(batch.map(uploadOne));
+  }
+
+  try {
+    const roomSnap = await getDoc(doc(db, 'rooms', A.room.code));
+    const currentCount = roomSnap.exists() ? (roomSnap.data().photoCount || 0) : 0;
+    await updateDoc(doc(db, 'rooms', A.room.code), { 
+      photoCount: currentCount + done 
+    });
+  } catch (e) { 
+    console.error('Failed to update photoCount', e);
+  }
+
+  setTimeout(() => { 
+    bar.classList.remove('on'); 
+    fill.style.width = '0%'; 
+  }, 700);
+  
+  toast(`${done} صورة تم رفعها بنجاح`);
+  document.getElementById('fileInput').value = '';
+};
+
+/* ════ GALLERY ════ */
+function renderGallery() {
+  const grid = document.getElementById('photoGrid');
+  const photos = A.photos;
+  const cnt = photos.length;
+  document.getElementById('galCnt').textContent = cnt + ' صورة';
+  document.getElementById('rtbSub').textContent = cnt + ' صورة';
+
+  if (!cnt) {
+    grid.innerHTML = `<div class="empty-gallery">
+      <div class="eg-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="7" width="34" height="26" rx="4"/>
+          <circle cx="20" cy="20" r="7"/><circle cx="20" cy="20" r="3" fill="currentColor" stroke="none"/>
+          <rect x="13" y="2" width="7" height="5.5" rx="2"/><circle cx="31" cy="12" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="eg-text">لا يوجد صور بعد — ارفع أولها</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = photos.map((p, i) => `
+    <div class="photo-cell" onclick="openLb(${i})" style="animation-delay:${i * .04}s">
+      <img src="${p.url}" alt="${esc(p.name)}" loading="lazy"/>
+      <div class="pc-bar">
+        <span class="pc-name">${esc(p.name)}</span>
+        <span class="pc-dl" onclick="event.stopPropagation();dlPhoto(${i})">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="9"/><polyline points="2 6 6 10 10 6"/><line x1="1" y1="11" x2="11" y2="11"/></svg>
+        </span>
+      </div>
+    </div>`).join('');
+}
+
+/* ════ LIGHTBOX ════ */
+window.openLb = (i) => {
+  const p = A.photos[i];
+  if (!p) return;
+  A.lbIdx = i;
+  document.getElementById('lbImg').src = p.url;
+  document.getElementById('lbName').textContent = p.name;
+  document.getElementById('lbCounter').textContent = (i + 1) + ' / ' + A.photos.length;
+  document.getElementById('lightbox').classList.add('on');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeLb = () => {
+  document.getElementById('lightbox').classList.remove('on');
+  document.body.style.overflow = '';
+};
+
+window.lbNav = (d) => {
+  const l = A.photos.length;
+  if (!l) return;
+  openLb((A.lbIdx + d + l) % l);
+};
+
+window.dlCurrent = () => dlPhoto(A.lbIdx);
+
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLb();
+});
+
+window.dlPhoto = async (i) => {
+  const p = A.photos[i];
+  if (!p) return;
+  try {
+    const res = await fetch(p.url);
+    const blob = await res.blob();
+    const bUrl = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement('a'), { href: bUrl, download: p.name });
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(bUrl), 2000);
+    toast('جاري التحميل');
+  } catch {
+    window.open(p.url, '_blank');
+    toast('فُتحت الصورة في تبويب جديد');
+  }
+};
+
+/* ════ CODE SHEET ════ */
+window.showCodeSheet = () => {
+  if (!A.room) return;
+  const code = A.room.code;
+  document.getElementById('codeChars').innerHTML = code.split('').map((c, i) =>
+    `<div class="code-chr" style="animation-delay:${.05 + i * .05}s">${c}</div>`
+  ).join('');
+  const rem = A.room.expiresAt - Date.now();
+  document.getElementById('codeExpNote').textContent = rem > 0 ? 'ينتهي خلال ' + fmtDur(rem) : 'انتهت المدة';
+  openModal('m-code');
+};
+
+window.copyCode = async () => {
+  const code = A.room?.code;
+  if (!code) return;
+  try {
+    await navigator.clipboard.writeText(code);
+  } catch (e) { }
+  toast('تم نسخ الكود · ' + code);
+};
+
+/* ══════════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════════ */
+window.openModal = id => document.getElementById(id).classList.add('on');
+window.closeModal = id => document.getElementById(id).classList.remove('on');
+
+document.querySelectorAll('.overlay').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('on'); })
+);
+
+/* ══════════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════════ */
+function genCode() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({ length: 6 }, () => c[Math.floor(Math.random() * c.length)]).join('');
+}
+
+const validEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function fmtHMS(totalSecs) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(Math.floor(totalSecs / 3600))}:${pad(Math.floor((totalSecs % 3600) / 60))}:${pad(totalSecs % 60)}`;
+}
+
+function fmtDur(ms) {
+  const s = Math.floor(ms / 1000), m = Math.floor(s / 60), h = Math.floor(m / 60), d = Math.floor(h / 24);
+  if (d > 0) return d + 'ي';
+  if (h > 0) return h + 'س';
+  if (m > 0) return m + 'د';
+  return s + 'ث';
+}
+
+function showFerr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('on');
+  setTimeout(() => el.classList.remove('on'), 3500);
+}
+
+function setLoad(id, v) {
+  document.getElementById(id).classList.toggle('btn-loading', v);
+}
+
+function toast(msg, type = '') {
+  const rack = document.getElementById('toastRack');
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'err' ? ' err' : '');
+  const icon = type === 'err'
+    ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>`
+    : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 6 11 12 3"/></svg>`;
+  t.innerHTML = icon + '<span>' + msg + '</span>';
+  rack.appendChild(t);
+  setTimeout(() => {
+    t.style.transition = 'all .25s';
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(6px) scale(.9)';
+    setTimeout(() => t.remove(), 250);
+  }, 2500);
+}
+
+function authMsg(code) {
+  const m = {
+    'auth/wrong-password': 'كلمة المرور غير صحيحة',
+    'auth/invalid-credential': 'البريد أو كلمة المرور غير صحيحة',
+    'auth/user-not-found': 'الحساب غير موجود',
+    'auth/email-already-in-use': 'البريد مسجّل مسبقاً',
+    'auth/weak-password': 'كلمة المرور ضعيفة جداً',
+    'auth/invalid-email': 'بريد إلكتروني غير صحيح',
+    'auth/too-many-requests': 'محاولات كثيرة، انتظر قليلاً',
+    'auth/network-request-failed': 'تحقق من اتصالك بالإنترنت',
+  };
+  return m[code] || 'حدث خطأ، حاول مجدداً';
+}
+
+/* ════ KEYBOARD ════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLb();
+    document.querySelectorAll('.overlay.on').forEach(o => o.classList.remove('on'));
+  }
+  if (document.getElementById('lightbox').classList.contains('on')) {
+    if (e.key === 'ArrowLeft') lbNav(1);
+    if (e.key === 'ArrowRight') lbNav(-1);
+  }
+});
+
+/* ════ AUTO-REFRESH ════ */
+setInterval(() => {
+  if (document.getElementById('s-dash').classList.contains('active') && A.user) loadRooms();
+}, 60000);
+</script>
+</body>
+</html>
